@@ -1,32 +1,32 @@
 class Game
   attr_accessor :current_player, :status, :board, :players
-  #TO DO : la classe a plusieurs attr_accessor: le current_player (égal à un objet Player), le status (en cours, nul ou un objet Player s'il gagne), le Board et un array contenant les 2 joueurs.
 
+  # INITIALISATION DU JEU
   def initialize(status = "on going", players = [])
-    
     @status = status
     @board = Board.new
     @players = players
     create_player1
     create_player2
     @current_player = @players[0]
-    #TO DO : créé 2 joueurs, créé un board, met le status à "on going", défini un current_player
   end
 
+  # INITIALISATION DU PREMIER JOUEUR
   def create_player1
-    puts "-"*22
-    puts "|      Joueur 1      |"
-    puts "-"*22
-    puts "Entrez votre nom :"
+    system('clear')
+    puts "----------------------".white.on_red
+    puts "|      Joueur 1      |".white.on_red
+    puts "----------------------".white.on_red
+    puts "\nEntrez votre nom :"
     print "> "
     name = gets.chomp 
-    puts "Choisissez votre symbol :"
+    puts "\nChoisissez votre symbol :"
     puts "\t1. X"
     puts "\t2. O"
     print "> "
     symbol = gets.chomp.to_i
     until symbol == 1 || symbol == 2
-      puts "ERROR, veuillez choisir 1 ou 2 :"
+      puts "\nERROR, veuillez choisir 1 ou 2 :"
       print "> "
       symbol = gets.chomp.to_i
     end
@@ -35,26 +35,30 @@ class Game
     @players << player1
   end
 
+  # INITIALISATION DU DEUXIEME JOUEUR
   def create_player2
-    puts "-"*22
-    puts "|      Joueur 2      |"
-    puts "-"*22
-    puts "Entrez votre nom :"
+    puts "\n\n----------------------".white.on_red
+    puts "|      Joueur 2      |".white.on_red
+    puts "----------------------".white.on_red
+    puts "\nEntrez votre nom :"
     print "> "
     name = gets.chomp 
     if @players[0].symbol == "X"
-      puts "Le joueur 1 à choisis le symbol : X"
+      puts "\n#{@players[0].name} à choisis le symbol : X"
       puts "Votre symbol sera donc : O"
       symbol = "O"
       player2 = Player.new(name, symbol)
       @players << player2
     else 
-      puts "Le joueur 1 à choisis le symbol : O"
+      puts "\n#{@players[0].name} à choisis le symbol : O"
       puts "Votre symbol sera donc : X"
       symbol = "X"
       player2 = Player.new(name, symbol)
       @players << player2
     end
+    puts "\n Pressez entrez pour commencer la partie :"
+    print "> "
+    gets.chomp
   end
 
   def turn
@@ -62,24 +66,31 @@ class Game
     Show.new.show_board(@board)
     @board.play_turn(@current_player)
 
-    if @board.victory? == false
+    if @board.victory?(@current_player.symbol * 3) == false
       (@board.count_turn.even?) ? (@current_player = @players[0]) : (@current_player = @players[1])
-
-     
-    else 
-      puts "partie terminé"
-      @status = "finish"
+    elsif @board.victory?(@current_player.symbol * 3) == true 
+      @status = true
+      system('clear')
+      Show.new.show_board(@board)
+    elsif @board.victory?(@current_player.symbol * 3) == "draw"
+      @status = "draw"
+      system('clear')
+      Show.new.show_board(@board)
     end
-    
-    #TO DO : méthode faisant appelle aux méthodes des autres classes (notamment à l'instance de Board). Elle affiche le plateau, demande au joueur ce qu'il joue, vérifie si un joueur a gagné, passe au joueur suivant si la partie n'est pas finie.
   end
 
+  # RELANCE UNE PARTIE 
   def new_round
     # TO DO : relance une partie en initialisant un nouveau board mais en gardant les mêmes joueurs.
   end
 
-  def game_end
-    # TO DO : permet l'affichage de fin de partie quand un vainqueur est détecté ou si il y a match nul
+  def game_end(status, player)
+    case status 
+    when "draw"
+      puts "Match nul"
+    when true
+      puts "Félicitation #{player.name}, tu la battue en #{@board.count_turn} tour"
+    end
   end    
 
 end

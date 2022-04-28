@@ -9,4 +9,5 @@ require 'app/game.rb'
 require 'app/player.rb'
 require 'views/show.rb'
 
+# LANCEMENT DU JEU
 Application.new.perform

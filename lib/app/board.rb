@@ -1,43 +1,43 @@
 
 class Board
   attr_accessor :board_cases, :count_turn
-  #TO DO : la classe a 1 attr_accessor : un array/hash qui contient les BoardCases.
-  #Optionnellement on peut aussi lui rajouter un autre sous le nom @count_turn pour compter le nombre de coups joué
 
-
+  # INITIALISATION DU PLATEAU DE JEU
   def initialize(board_cases = [], count_turn = 0)
     @count_turn = count_turn
     @board_cases = board_cases
-    for i in 1..9
-      @board_cases << BoardCase.new(i)
+    for i in 1..3
+      @board_cases << BoardCase.new("A#{i}")
+      @board_cases << BoardCase.new("B#{i}")
+      @board_cases << BoardCase.new("C#{i}")
     end
-    #TO DO :
-    #Quand la classe s'initialize, elle doit créer 9 instances BoardCases
-    #Ces instances sont rangées dans un array/hash qui est l'attr_accessor de la classe
   end
 
+  # UN TOUR DE JEU
   def play_turn(player)
-    puts "#{player.name} choisissez une case "
+    puts "\n#{player.name} choisissez une case :"
     tab_choice = ["A1", "B1", "C1", "A2", "B2", "C2", "A3", "B3", "C3", ]
-    tab_choice.each_with_index {|choice, i| puts "\t#{i + 1}. #{choice}"}
-    print "> "
+    tab_choice.each_with_index {|choice, i| print "\t#{i + 1}. #{choice}"}
+    print "\n> "
     choice = gets.chomp.to_i
     until (1..9).cover?(choice) && @board_cases[choice - 1].board_case_string == " "
-      puts "Choisissez une case valide :"
+      puts "\nChoisissez une case valide :"
       choice = gets.chomp.to_i
     end
-    ()
     @board_cases[choice - 1].board_case_string = player.symbol
     @count_turn += 1
-    #TO DO : une méthode qui :
-    #1) demande au bon joueur ce qu'il souhaite faire
-    #2) change la BoardCase jouée en fonction de la valeur du joueur (X ou O)
   end
 
-  def victory?
-    (@count_turn == 9) ? (return true) : (return false)
-
-    #TO DO : une méthode qui vérifie le plateau et indique s'il y a un vainqueur ou match nul
+  # VERIFIE SI IL Y AS UN GAGNANT OU UN MATCH NUL
+  def victory?(player)
+    (@count_turn == 9) ? (return "draw") : (return false)
+    (@board_cases[0].board_case_string + @board_cases[1].board_case_string + @board_cases[2].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[3].board_case_string + @board_cases[4].board_case_string + @board_cases[5].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[6].board_case_string + @board_cases[7].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[0].board_case_string + @board_cases[3].board_case_string + @board_cases[6].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[1].board_case_string + @board_cases[4].board_case_string + @board_cases[7].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[2].board_case_string + @board_cases[5].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
+    (@board_cases[0].board_case_string + @board_cases[4].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
   end
 
 end
