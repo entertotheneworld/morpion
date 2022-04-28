@@ -6,23 +6,31 @@ class Game
     @status = status
     @board = Board.new
     @players = players
+    welcome
     create_player1
     create_player2
     @current_player = @players[0]
   end
 
+  def welcome
+    system('clear')
+    puts "-----------------------------------".white.on_black
+    puts "|                                 |".white.on_black
+    puts "|      BIENVENUE AU MORPION       |".white.on_black
+    puts "|                                 |".white.on_black
+    puts "-----------------------------------".white.on_black
+    puts "\n\nINITIALISATION DES JOUEURS :".white.on_red
+  end
   # INITIALISATION DU PREMIER JOUEUR
   def create_player1
-    system('clear')
-    puts "----------------------".white.on_red
+    puts "\n----------------------".white.on_red
     puts "|      Joueur 1      |".white.on_red
     puts "----------------------".white.on_red
     puts "\nEntrez votre nom :"
     print "> "
     name = gets.chomp 
     puts "\nChoisissez votre symbol :"
-    puts "\t1. X"
-    puts "\t2. O"
+    puts "\t1. X\t2. O"
     print "> "
     symbol = gets.chomp.to_i
     until symbol == 1 || symbol == 2
@@ -61,6 +69,7 @@ class Game
     gets.chomp
   end
 
+  # LANCE UNE PARTIE
   def turn
     system('clear')
     Show.new.show_board(@board)
@@ -84,12 +93,21 @@ class Game
     # TO DO : relance une partie en initialisant un nouveau board mais en gardant les mêmes joueurs.
   end
 
+  # CHERCHE SI UNE PARTIE EST TERMINEE
   def game_end(status, player)
     case status 
     when "draw"
-      puts "Match nul"
+      puts "\n\n-----------------------------------".white.on_black
+      puts "|                                 |".white.on_black
+      puts "|           MATCH NUL             |".white.on_black
+      puts "|                                 |".white.on_black
+      puts "-----------------------------------".white.on_black
     when true
-      puts "Félicitation #{player.name}, tu la battue en #{@board.count_turn} tour"
+      puts "\n\n-----------------------------------".white.on_black
+      puts "|                                 |".white.on_black
+      puts "|       Félicitation #{player.name}      |".white.on_black
+      puts "|        VICTOIRE EN #{@board.count_turn} TOURS      |".white.on_black
+      puts "-----------------------------------".white.on_black
     end
   end    
 

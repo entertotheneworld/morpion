@@ -1,5 +1,6 @@
 class Application
 
+  # LANCE LE JEU
   def perform
     game = Game.new
     while game.status == "on going"
