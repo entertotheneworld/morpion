@@ -1,8 +1,9 @@
 class Game
-  attr_accessor :current_player, :status, :board, :players
+  attr_accessor :current_player, :status, :board, :players, :new_part
 
   # INITIALISATION DU JEU
-  def initialize(status = "on going", players = [])
+  def initialize(status = "on going", players = [], new_part = true)
+    @new_part = new_part
     @status = status
     @board = Board.new
     @players = players
@@ -21,6 +22,7 @@ class Game
     puts "-----------------------------------".white.on_black
     puts "\n\nINITIALISATION DES JOUEURS :".white.on_red
   end
+
   # INITIALISATION DU PREMIER JOUEUR
   def create_player1
     puts "\n----------------------".white.on_red
@@ -90,14 +92,29 @@ class Game
 
   # RELANCE UNE PARTIE 
   def new_round
-    # TO DO : relance une partie en initialisant un nouveau board mais en gardant les mêmes joueurs.
+    puts "\nVoulez vous refaire une partie ?"
+    puts "\t1. Oui\tNon"
+    print "> "
+    new_part = gets.chomp.to_i
+    until new_part == 1 || new_part == 2
+      puts "ERROR, veuillez réessayer"
+      new_part = gets.chomp.to_i
+    end
+
+    if new_part == 1
+      @status = "on going"
+      @board = Board.new
+    else
+      @new_part = false
+    end
   end
 
   # CHERCHE SI UNE PARTIE EST TERMINEE
   def game_end(status, player)
     case status 
     when "draw"
-      puts "\n\n-----------------------------------".white.on_black
+      puts "\n\n"
+      puts "-----------------------------------".white.on_black
       puts "|                                 |".white.on_black
       puts "|           MATCH NUL             |".white.on_black
       puts "|                                 |".white.on_black
@@ -109,6 +126,14 @@ class Game
       puts "|        VICTOIRE EN #{@board.count_turn} TOURS      |".white.on_black
       puts "-----------------------------------".white.on_black
     end
-  end    
-
+  end
+  
+  def final_end
+    system('clear')
+    puts "-----------------------------------".white.on_black
+    puts "|                                 |".white.on_black
+    puts "|           à bientôt             |".white.on_black
+    puts "|                                 |".white.on_black
+    puts "-----------------------------------".white.on_black
+  end
 end
