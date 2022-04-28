@@ -76,7 +76,6 @@ class Game
     system('clear')
     Show.new.show_board(@board)
     @board.play_turn(@current_player)
-
     if @board.victory?(@current_player.symbol * 3) == false
       (@board.count_turn.even?) ? (@current_player = @players[0]) : (@current_player = @players[1])
     elsif @board.victory?(@current_player.symbol * 3) == true 

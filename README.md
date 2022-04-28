@@ -17,7 +17,7 @@ To verify the installation you must have a Gemfile.lock file in the folder.
 
 ## 3. Spec
 ```ruby
-$ rspec spec/
+$ rspec
 ```
 
 ## 3. Usage
