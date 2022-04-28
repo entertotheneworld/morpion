@@ -1,7 +1,7 @@
 # MORPION X/O
 
 
-## 1. Download
+## 1. Download (✂️ Copy and 📋 Paste)
 ```ruby
 $ git clone https://github.com/entertotheneworld/morpion.git
 ```

@@ -13,6 +13,7 @@ class Game
     @current_player = @players[0]
   end
 
+  # MESSAGE DEBUT DE PARTIE
   def welcome
     system('clear')
     puts "-----------------------------------".white.on_black
@@ -20,52 +21,80 @@ class Game
     puts "|      BIENVENUE AU MORPION       |".white.on_black
     puts "|                                 |".white.on_black
     puts "-----------------------------------".white.on_black
-    puts "\n\nINITIALISATION DES JOUEURS :".white.on_red
+    puts "\n\n"
+    puts "------------------------------".white.on_blue
+    puts "| INITIALISATION DES JOUEURS |".white.on_blue
+    puts "------------------------------".white.on_blue
   end
 
   # INITIALISATION DU PREMIER JOUEUR
   def create_player1
-    puts "\n----------------------".white.on_red
+    puts "\n"
+    puts "----------------------".white.on_red
     puts "|      Joueur 1      |".white.on_red
     puts "----------------------".white.on_red
     puts "\nEntrez votre nom :"
     print "> "
-    name = gets.chomp 
+    name = gets.chomp
+
     puts "\nChoisissez votre symbol :"
-    puts "\t1. X\t2. O"
+    puts "\t1. X\t2. O\t3. \u{1f600}\t4. \u{1f609}"
     print "> "
     symbol = gets.chomp.to_i
-    until symbol == 1 || symbol == 2
-      puts "\nERROR, veuillez choisir 1 ou 2 :"
+    until symbol == 1 || symbol == 2 || symbol == 3 || symbol == 4
+      puts "\nERROR, veuillez choisir un chiffre entre 1 et 4 :"
       print "> "
       symbol = gets.chomp.to_i
     end
-    (symbol == 1) ? (symbol = "X") : (symbol = "0")
-    player1 = Player.new(name, symbol)
-    @players << player1
+    @number_symbol_player1 = symbol
+    case symbol
+    when 1
+      symbol = "X"
+    when 2
+      symbol = "0"
+    when 3
+      symbol = "\u{1f600}"
+    when 4
+      symbol = "\u{1f609}"
+    end
+    @player1 = Player.new(name, symbol)
+    @players << @player1
   end
 
   # INITIALISATION DU DEUXIEME JOUEUR
   def create_player2
-    puts "\n\n----------------------".white.on_red
+    puts "\n\n"
+    puts "----------------------".white.on_red
     puts "|      Joueur 2      |".white.on_red
     puts "----------------------".white.on_red
     puts "\nEntrez votre nom :"
     print "> "
-    name = gets.chomp 
-    if @players[0].symbol == "X"
-      puts "\n#{@players[0].name} à choisis le symbol : X"
-      puts "Votre symbol sera donc : O"
-      symbol = "O"
-      player2 = Player.new(name, symbol)
-      @players << player2
-    else 
-      puts "\n#{@players[0].name} à choisis le symbol : O"
-      puts "Votre symbol sera donc : X"
-      symbol = "X"
-      player2 = Player.new(name, symbol)
-      @players << player2
+    name = gets.chomp
+
+    puts "\nChoisissez votre symbol :"
+    puts "\t1. X\t2. O\t3. \u{1f600}\t4. \u{1f609}"
+    print "> "
+    symbol = gets.chomp.to_i
+    until (symbol == 1 || symbol == 2 || symbol == 3 || symbol == 4) && @number_symbol_player1 != symbol
+      puts "\nERROR, veuillez choisir un chiffre entre 1 et 4 ou ne choisissez pas le même symbol que #{@players[0].name}"
+      print "> "
+      symbol = gets.chomp.to_i
     end
+
+    case symbol
+    when 1
+      symbol = "X"
+    when 2
+      symbol = "0"
+    when 3
+      symbol = "\u{1f600}"
+    when 4
+      symbol = "\u{1f609}"
+    end
+
+    player2 = Player.new(name, symbol)
+    @players << player2
+
     puts "\n Pressez entrez pour commencer la partie :"
     print "> "
     gets.chomp
@@ -76,6 +105,7 @@ class Game
     system('clear')
     Show.new.show_board(@board)
     @board.play_turn(@current_player)
+
     if @board.victory?(@current_player.symbol * 3) == false
       (@board.count_turn.even?) ? (@current_player = @players[0]) : (@current_player = @players[1])
     elsif @board.victory?(@current_player.symbol * 3) == true 
@@ -89,7 +119,7 @@ class Game
     end
   end
 
-  # RELANCE UNE PARTIE 
+  # RELANCE UNE PARTIE AVEC LES MEME JOUEUR
   def new_round
     puts "\nVoulez vous refaire une partie ?"
     puts "\t1. Oui\tNon"
@@ -119,7 +149,8 @@ class Game
       puts "|                                 |".white.on_black
       puts "-----------------------------------".white.on_black
     when true
-      puts "\n\n-----------------------------------".white.on_black
+      puts "\n\n"
+      puts "-----------------------------------".white.on_black
       puts "|                                 |".white.on_black
       puts "|       Félicitation #{player.name}      |".white.on_black
       puts "|        VICTOIRE EN #{@board.count_turn} TOURS      |".white.on_black
