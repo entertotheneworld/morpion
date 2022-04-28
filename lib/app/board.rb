@@ -30,14 +30,13 @@ class Board
 
   # VERIFIE SI IL Y AS UN GAGNANT OU UN MATCH NUL
   def victory?(player)
-    (@count_turn == 9) ? (return "draw") : (return false)
-    (@board_cases[0].board_case_string + @board_cases[1].board_case_string + @board_cases[2].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[3].board_case_string + @board_cases[4].board_case_string + @board_cases[5].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[6].board_case_string + @board_cases[7].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[0].board_case_string + @board_cases[3].board_case_string + @board_cases[6].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[1].board_case_string + @board_cases[4].board_case_string + @board_cases[7].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[2].board_case_string + @board_cases[5].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
-    (@board_cases[0].board_case_string + @board_cases[4].board_case_string + @board_cases[8].board_case_string == player) ? (return true) : (return false)
+    if (@board_cases[0].board_case_string + @board_cases[1].board_case_string + @board_cases[2].board_case_string == player) || (@board_cases[3].board_case_string + @board_cases[4].board_case_string + @board_cases[5].board_case_string == player) || (@board_cases[6].board_case_string + @board_cases[7].board_case_string + @board_cases[8].board_case_string == player) || (@board_cases[0].board_case_string + @board_cases[3].board_case_string + @board_cases[6].board_case_string == player) || (@board_cases[1].board_case_string + @board_cases[4].board_case_string + @board_cases[7].board_case_string == player) || (@board_cases[2].board_case_string + @board_cases[5].board_case_string + @board_cases[8].board_case_string == player) || (@board_cases[0].board_case_string + @board_cases[4].board_case_string + @board_cases[8].board_case_string == player) || (@board_cases[2].board_case_string + @board_cases[4].board_case_string + @board_cases[6].board_case_string == player)
+      return true
+    elsif @count_turn == 9
+      return "draw"
+    else 
+      return false 
+    end
   end
 
 end
